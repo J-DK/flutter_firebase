@@ -2,6 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_firebase/services/auth.dart';
 
 class SignIn extends StatefulWidget {
+
+  final Function toggleView;
+
+  SignIn({this.toggleView});
+
   @override
   _SignInState createState() => _SignInState();
 }
@@ -21,6 +26,15 @@ class _SignInState extends State<SignIn> {
         backgroundColor: Colors.brown[400],
         elevation: 0,
         title: Text('Sign in to Brew Crew'),
+        actions: [
+          FlatButton.icon(
+              onPressed: () {
+                widget.toggleView();
+              },
+              icon: Icon(Icons.person),
+              label: Text('Register')
+          )
+        ],
       ),
       body: Container(
         padding: EdgeInsets.symmetric(vertical: 20, horizontal: 50),
@@ -42,7 +56,7 @@ class _SignInState extends State<SignIn> {
               ),
               SizedBox(height: 20),
               RaisedButton(
-                color: Colors.brown[900],
+                color: Colors.brown[400],
                 child: Text(
                     'Sign In',
                     style: TextStyle(
