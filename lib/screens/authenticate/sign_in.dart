@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_firebase/services/auth.dart';
+import 'package:flutter_firebase/shared/constants.dart';
 
 class SignIn extends StatefulWidget {
 
@@ -52,6 +53,7 @@ class _SignInState extends State<SignIn> {
                 validator: (val) {
                   return val.isEmpty ? 'Enter your email' : null;
                 },
+                decoration: textInputDecoration.copyWith(hintText: 'Email'),
               ),
               SizedBox(height: 20),
               TextFormField(
@@ -62,6 +64,7 @@ class _SignInState extends State<SignIn> {
                 validator: (val) {
                   return val.length < 6 ? 'Enter a password 6+ chars long ' : null;
                 },
+                decoration: textInputDecoration.copyWith(hintText: 'Password'),
               ),
               SizedBox(height: 20),
               RaisedButton(
