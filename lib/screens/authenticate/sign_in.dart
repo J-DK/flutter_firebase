@@ -15,7 +15,9 @@ class _SignInState extends State<SignIn> {
 
   String email = '';
   String password = '';
+  String error = '';
 
+  final _formKey = GlobalKey<FormState>();
   final AuthService _auth = AuthService();
 
   @override
@@ -39,6 +41,7 @@ class _SignInState extends State<SignIn> {
       body: Container(
         padding: EdgeInsets.symmetric(vertical: 20, horizontal: 50),
         child: Form(
+          key: _formKey,
           child: Column(
             children: <Widget>[
               SizedBox(height: 20),
@@ -46,12 +49,18 @@ class _SignInState extends State<SignIn> {
                 onChanged: (val) {
                   setState(() => email = val);
                 },
+                validator: (val) {
+                  return val.isEmpty ? 'Enter your email' : null;
+                },
               ),
               SizedBox(height: 20),
               TextFormField(
                 obscureText: true,
                 onChanged: (val) {
                   setState(() => password = val);
+                },
+                validator: (val) {
+                  return val.length < 6 ? 'Enter a password 6+ chars long ' : null;
                 },
               ),
               SizedBox(height: 20),
@@ -63,10 +72,21 @@ class _SignInState extends State<SignIn> {
                       color: Colors.white
                     )
                 ),
-                onPressed: () {
-                  print(email);
-                  print(password);
+                onPressed: () async {
+                  if (_formKey.currentState.validate()) {
+                    dynamic result = await _auth.signInWithEmailAndPassword(email, password);
+                    if (result == null) {
+                      setState(() {
+                        error = 'Could not sign in with the provided credentials';
+                      });
+                    }
+                  }
                 }
+              ),
+              SizedBox(height: 20),
+              Text(
+                error,
+                style: TextStyle(color: Colors.red, fontSize: 14),
               )
             ],
           ),

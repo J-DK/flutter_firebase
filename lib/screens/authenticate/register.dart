@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_firebase/services/auth.dart';
 
 class Register extends StatefulWidget {
 
@@ -14,7 +15,9 @@ class _RegisterState extends State<Register> {
 
   String email = '';
   String password = '';
+  String error = '';
 
+  final AuthService _auth = AuthService();
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -68,12 +71,21 @@ class _RegisterState extends State<Register> {
                             color: Colors.white
                         )
                     ),
-                    onPressed: () {
+                    onPressed: () async {
                       if (_formKey.currentState.validate()) {
-                          print(email);
-                          print(password);
+                        dynamic result = await _auth.registerWithEmailAndPassword(email, password);
+                        if (result == null) {
+                          setState(() {
+                            error = 'Please provide a valid email';
+                          });
+                        }
                       }
                     }
+                ),
+                SizedBox(height: 20),
+                Text(
+                  error,
+                  style: TextStyle(color: Colors.red, fontSize: 14),
                 )
               ],
             ),
