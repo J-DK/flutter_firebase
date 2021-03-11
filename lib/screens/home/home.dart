@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_firebase/models/brew.dart';
 import 'package:flutter_firebase/screens/home/brew_list.dart';
+import 'package:flutter_firebase/screens/home/settings_form.dart';
 import 'package:flutter_firebase/services/auth.dart';
 import 'package:flutter_firebase/services/database.dart';
 import 'package:provider/provider.dart';
@@ -16,7 +17,7 @@ class Home extends StatelessWidget {
       showModalBottomSheet(context: context, builder: (context) {
         return Container(
           padding: EdgeInsets.symmetric(vertical: 20, horizontal: 60),
-          child: Text('Bottom sheet'),
+          child: SettingsForm(),
         );
       });
     }
