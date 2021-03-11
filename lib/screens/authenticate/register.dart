@@ -15,6 +15,8 @@ class _RegisterState extends State<Register> {
   String email = '';
   String password = '';
 
+  final _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,6 +37,7 @@ class _RegisterState extends State<Register> {
       body: Container(
           padding: EdgeInsets.symmetric(vertical: 20, horizontal: 50),
           child: Form(
+            key: _formKey,
             child: Column(
               children: <Widget>[
                 SizedBox(height: 20),
@@ -42,12 +45,18 @@ class _RegisterState extends State<Register> {
                   onChanged: (val) {
                     setState(() => email = val);
                   },
+                  validator: (val) {
+                     return val.isEmpty ? 'Enter an email' : null;
+                  },
                 ),
                 SizedBox(height: 20),
                 TextFormField(
                   obscureText: true,
                   onChanged: (val) {
                     setState(() => password = val);
+                  },
+                  validator: (val) {
+                    return val.length < 6 ? 'Enter a password 6+ chars long ' : null;
                   },
                 ),
                 SizedBox(height: 20),
@@ -60,8 +69,10 @@ class _RegisterState extends State<Register> {
                         )
                     ),
                     onPressed: () {
-                      print(email);
-                      print(password);
+                      if (_formKey.currentState.validate()) {
+                          print(email);
+                          print(password);
+                      }
                     }
                 )
               ],
