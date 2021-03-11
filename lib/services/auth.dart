@@ -9,6 +9,10 @@ class AuthService {
     return user != null ? BrewUser(uid: user.uid) : null;
   }
 
+  Stream<BrewUser> get user {
+    return _auth.authStateChanges().map((User user) => userFromFirebase(user));
+  }
+
   // Sign in anonymous
   Future signInAnonymous() async {
 
