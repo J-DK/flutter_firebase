@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_firebase/services/auth.dart';
 import 'package:flutter_firebase/shared/constants.dart';
+import 'package:flutter_firebase/shared/loading.dart';
 
 class SignIn extends StatefulWidget {
 
@@ -18,12 +19,14 @@ class _SignInState extends State<SignIn> {
   String password = '';
   String error = '';
 
+  bool loading = false;
+
   final _formKey = GlobalKey<FormState>();
   final AuthService _auth = AuthService();
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return loading ? Loading() : Scaffold(
       backgroundColor: Colors.brown[100],
       appBar: AppBar(
         backgroundColor: Colors.brown[400],
@@ -47,6 +50,7 @@ class _SignInState extends State<SignIn> {
             children: <Widget>[
               SizedBox(height: 20),
               TextFormField(
+                cursorColor: Colors.brown,
                 onChanged: (val) {
                   setState(() => email = val);
                 },
@@ -58,6 +62,7 @@ class _SignInState extends State<SignIn> {
               SizedBox(height: 20),
               TextFormField(
                 obscureText: true,
+                cursorColor: Colors.brown,
                 onChanged: (val) {
                   setState(() => password = val);
                 },
@@ -77,10 +82,14 @@ class _SignInState extends State<SignIn> {
                 ),
                 onPressed: () async {
                   if (_formKey.currentState.validate()) {
+                    setState(() {
+                      loading = true;
+                    });
                     dynamic result = await _auth.signInWithEmailAndPassword(email, password);
                     if (result == null) {
                       setState(() {
                         error = 'Could not sign in with the provided credentials';
+                        loading = false;
                       });
                     }
                   }
